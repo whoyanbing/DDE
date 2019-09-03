@@ -78,11 +78,6 @@ var connection=mysql.createConnection(mysql_config);
 //     password:'123456',　　
 //     connectString : "45.76.105.71:1521/xe"
 // }
-// var config={
-//     user:'system',
-//     password:'qazxc',
-//     connectString : "127.0.0.1:1521/xe"
-// }
 var config={
     user:'admin',
     password:'qazxc',
@@ -152,6 +147,7 @@ var upload2 = multer({ storage: storage2 });
 
 app.use('/', express.static(path.join(__dirname, '.', 'client')));
 
+
 // app.get('/', function (req, res) {
 //     res.send('Hello World');
 // })
@@ -165,6 +161,8 @@ app.use('/', express.static(path.join(__dirname, '.', 'client')));
 // router.get('/', function(req, res, next) {
 //     res.render('index');
 // })
+
+
 
 //Getting all the table name: seahorse
 app.get('/tableOracle', function(req,res){
@@ -189,7 +187,7 @@ app.get('/tableMysql', function(req,res){
 //get all the records in the table according to the table name
 app.get('/tableDetailListOracle' ,function(req, res) {
     //console.log('detail',req.query.tableName);
-    var sql=`select * from `+req.query.tableName;
+    var sql=`select * from DDE.`+req.query.tableName;
     //var sql=`select * from DDE.SEAHORSE`;
     SQLExecute(sql,config,res)
 })
@@ -220,7 +218,7 @@ app.get('/tableDetailMysql', function(req, res) {
 
 //get all the information of one record according to the value of primary key
 app.get('/objectDetailOracle', (req, res) =>{
-    var sql=`select * from `+req.query.tableName+` where `+req.query.column_name+`='`+req.query.name+`'`;
+    var sql=`select * from  DDE.`+req.query.tableName+` where `+req.query.column_name+`='`+req.query.name+`'`;
     console.log(sql)
     SQLExecute(sql,config,res);
 })
@@ -240,7 +238,7 @@ app.get('/objectDetailMysql', (req, res) =>{
 
 //delete the record according to the primary key
 app.get('/deleteOracle', function(req, res) {
-    var sql = `delete from `+req.query.tableName+` where `+req.query.column_name+` ='`+req.query.name+`'`;
+    var sql = `delete from DDE.`+req.query.tableName+` where `+req.query.column_name+` ='`+req.query.name+`'`;
     //console.log('sql',sql)
     SQLExecute(sql,config,res);
 })
@@ -254,7 +252,7 @@ app.get('/deleteMysql', function(req, res) {
 
 //insert one record into the table according to the table name
 app.post('/insertOracle', function(req, res) {
-    var sql = `insert into `+req.query.tableName+`(`+req.body.queryName+`) values(`+req.body.queryValue+`)`;
+    var sql = `insert into DDE.`+req.query.tableName+`(`+req.body.queryName+`) values(`+req.body.queryValue+`)`;
     SQLExecute(sql,config,res);
 
 })
@@ -290,9 +288,9 @@ app.get('/createTableOracle', function(req, res){
 app.post('/exportOracle',function(req,res){
     //if no chosen record, it will export all the record in the table
     if((req.body.querys == '') || (req.body.querys == null)){
-        var sql=`select * from `+req.query.tableName
+        var sql=`select * from DDE.`+req.query.tableName
     } else {
-        var sql=`select * from `+req.query.tableName+` where `+req.body.querys;
+        var sql=`select * from DDE.`+req.query.tableName+` where `+req.body.querys;
     }
     //the path of storing the export file
     var url=exportFolder+req.body.filename;
@@ -390,7 +388,7 @@ app.post('/importOracle',upload.single('file'),function(req,res){
     //read the content of csv file
     csv2.parseFile(uploadFolder+fileName, function(err, data) {
         //write the sql query without binding
-        var sqlQuery = `insert into `+req.query.tableName+` values(`;
+        var sqlQuery = `insert into DDE.`+req.query.tableName+` values(`;
         for (let columnIndex = 1; columnIndex <= data[0].length; columnIndex++) {
             if(columnIndex!=data[0].length){
                 sqlQuery = sqlQuery+`:`+columnIndex+`,`;
@@ -514,7 +512,7 @@ app.post('/importTableMysql',upload2.single('file'),function(req,res){
 
 //update the information of record
 app.post('/updateOracle', function(req, res) {
-    var sql = `update `+req.query.tableName+` set `+req.body.updateQuery+` where ID ='`+req.query.name+`'`;
+    var sql = `update DDE.`+req.query.tableName+` set `+req.body.updateQuery+` where ID ='`+req.query.name+`'`;
     console.log('update',sql);
     SQLExecute(sql,config,res)
 })
