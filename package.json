@@ -9,7 +9,7 @@
     "@types/node": "^12.7.2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "fast-csv": "^3.4.0",
+    "fast-csv": "^4.3.6",
     "forever": "^1.0.0",
     "multer": "^1.4.2",
     "mysql": "^2.17.1",
