@@ -5,7 +5,7 @@
   "main": "app.js",
   "dependencies": {
     "@okta/jwt-verifier": "0.0.14",
-    "@okta/oidc-middleware": "^2.0.0",
+    "@okta/oidc-middleware": "^5.0.0",
     "@types/node": "^12.7.2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
